@@ -382,10 +382,10 @@
         .gallery {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            max-width: 900px;
+            gap: 14px;
+            max-width: 950px;
             width: 100%;
-            margin-top: 8px;
+            margin-top: 10px;
             text-align: left;
         }
 
@@ -405,46 +405,146 @@
         }
 
         .gallery-card .photo {
-            height: 90px;
+            height: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
             background: #fff3e0;
+            cursor: zoom-in;
         }
 
         .gallery-card .photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .gallery-card .photo:hover img {
+            transform: scale(1.08);
+        }
+
+        /* Иконка лупы при наведении */
+        .gallery-card .photo::after {
+            content: '🔍';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .gallery-card .photo:hover::after {
+            opacity: 1;
         }
 
         .gallery-card .info {
-            padding: 8px 12px;
+            padding: 10px 14px;
         }
 
         .gallery-card .info h3 {
             color: #e65100;
-            font-size: 0.95em;
-            margin-bottom: 3px;
+            font-size: 1em;
+            margin-bottom: 4px;
         }
 
         .gallery-card .info .origin {
             display: inline-block;
-            font-size: 0.6em;
+            font-size: 0.65em;
             color: #ff5722;
             background: #fff3e0;
-            padding: 2px 7px;
+            padding: 2px 8px;
             border-radius: 10px;
             margin-bottom: 5px;
             font-weight: 600;
         }
 
         .gallery-card .info p {
-            font-size: 0.72em;
+            font-size: 0.75em;
             color: #4e342e;
-            line-height: 1.35;
+            line-height: 1.4;
+        }
+
+        /* ===== ЛАЙТБОКС (полный экран) ===== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+            cursor: zoom-out;
+            padding: 30px;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox img {
+            max-width: 95%;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            transform: scale(0.85);
+            transition: transform 0.35s ease;
+        }
+
+        .lightbox.active img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: white;
+            font-size: 2.5em;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.15);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            line-height: 1;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
         }
 
         /* ===== АДАПТИВ ===== */
@@ -453,16 +553,25 @@
             .controls { padding: 6px 12px; }
             .controls button { width: 38px; height: 38px; }
             .gallery { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-            .gallery-card .photo { height: 70px; }
-            .gallery-card .info { padding: 6px 8px; }
-            .gallery-card .info h3 { font-size: 0.85em; }
-            .gallery-card .info p { font-size: 0.65em; }
+            .gallery-card .photo { height: 110px; }
+            .gallery-card .info { padding: 8px 10px; }
+            .gallery-card .info h3 { font-size: 0.9em; }
+            .gallery-card .info p { font-size: 0.7em; }
+            .lightbox-close { font-size: 2em; width: 45px; height: 45px; }
+            .lightbox-caption { font-size: 0.95em; padding: 8px 18px; }
         }
     </style>
 </head>
 <body>
 
     <div class="progress" id="progress"></div>
+
+    <!-- ===== ЛАЙТБОКС ===== -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">×</span>
+        <img id="lightboxImg" src="" alt="">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
 
     <!-- ===== СЛАЙД 1: ТИТУЛ ===== -->
     <section class="slide title-slide active">
@@ -580,7 +689,9 @@
         <h2>🌟 Необычные цитрусы</h2>
         <div class="gallery">
             <div class="gallery-card">
-                <div class="photo"><img src="images/citron.jpg" alt="Цитрон"></div>
+                <div class="photo" onclick="openLightbox('images/citron.jpg', 'Цитрон')">
+                    <img src="images/citron.jpg" alt="Цитрон">
+                </div>
                 <div class="info">
                     <h3>Цитрон</h3>
                     <span class="origin">Индия, Китай</span>
@@ -589,7 +700,9 @@
             </div>
 
             <div class="gallery-card">
-                <div class="photo"><img src="images/kumquat.jpg" alt="Кумкват"></div>
+                <div class="photo" onclick="openLightbox('images/kumquat.jpg', 'Кумкват')">
+                    <img src="images/kumquat.jpg" alt="Кумкват">
+                </div>
                 <div class="info">
                     <h3>Кумкват</h3>
                     <span class="origin">Китай</span>
@@ -598,7 +711,9 @@
             </div>
 
             <div class="gallery-card">
-                <div class="photo"><img src="images/yuzu.jpg" alt="Юдзу"></div>
+                <div class="photo" onclick="openLightbox('images/yuzu.jpg', 'Юдзу')">
+                    <img src="images/yuzu.jpg" alt="Юдзу">
+                </div>
                 <div class="info">
                     <h3>Юдзу</h3>
                     <span class="origin">Япония, Корея</span>
@@ -607,7 +722,9 @@
             </div>
 
             <div class="gallery-card">
-                <div class="photo"><img src="images/sweetie.jpg" alt="Свити"></div>
+                <div class="photo" onclick="openLightbox('images/sweetie.jpg', 'Свити')">
+                    <img src="images/sweetie.jpg" alt="Свити">
+                </div>
                 <div class="info">
                     <h3>Свити</h3>
                     <span class="origin">Израиль</span>
@@ -616,7 +733,9 @@
             </div>
 
             <div class="gallery-card">
-                <div class="photo"><img src="images/fingerlime.jpg" alt="Пальчиковый лайм"></div>
+                <div class="photo" onclick="openLightbox('images/fingerlime.jpg', 'Пальчиковый лайм')">
+                    <img src="images/fingerlime.jpg" alt="Пальчиковый лайм">
+                </div>
                 <div class="info">
                     <h3>Пальчиковый лайм</h3>
                     <span class="origin">Австралия</span>
@@ -625,7 +744,9 @@
             </div>
 
             <div class="gallery-card">
-                <div class="photo"><img src="images/bergamot.jpg" alt="Бергамот"></div>
+                <div class="photo" onclick="openLightbox('images/bergamot.jpg', 'Бергамот')">
+                    <img src="images/bergamot.jpg" alt="Бергамот">
+                </div>
                 <div class="info">
                     <h3>Бергамот</h3>
                     <span class="origin">Италия</span>
@@ -730,6 +851,15 @@
         nextBtn.onclick = function() { showSlide(current + 1); };
 
         document.addEventListener('keydown', function(e) {
+            // Если открыт лайтбокс — Esc закрывает его, стрелки НЕ переключают слайды
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+                return;
+            }
+
             if (e.key === 'ArrowRight' || e.key === ' ') {
                 e.preventDefault();
                 showSlide(current + 1);
@@ -751,6 +881,25 @@
             if (Math.abs(diff) > 50) {
                 if (diff > 0) showSlide(current + 1);
                 else showSlide(current - 1);
+            }
+        });
+
+        // ===== ЛАЙТБОКС =====
+        function openLightbox(src, caption) {
+            const lightbox = document.getElementById('lightbox');
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxCaption').textContent = caption;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // Клик по фону — закрыть (но не по самой картинке)
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
             }
         });
     </script>
