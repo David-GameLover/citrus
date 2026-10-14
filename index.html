@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍊 Цитрусы — доклад</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a0e05;
+            overflow: hidden;
+            height: 100vh;
+            color: #3e2723;
+        }
+
+        /* ===== СЛАЙДЫ ===== */
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 80px;
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+            text-align: center;
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .slide h1 {
+            font-family: 'Comfortaa', cursive;
+            font-size: clamp(2em, 6vw, 4.5em);
+            color: #e65100;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .slide h2 {
+            font-family: 'Comfortaa', cursive;
+            font-size: clamp(1.5em, 4vw, 2.8em);
+            color: #ff5722;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .slide h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff9800, #ffc107);
+            border-radius: 4px;
+        }
+
+        .slide p {
+            font-size: clamp(1em, 1.8vw, 1.3em);
+            max-width: 900px;
+            line-height: 1.7;
+            color: #4e342e;
+        }
+
+        .slide .subtitle {
+            font-size: clamp(1em, 2vw, 1.4em);
+            color: #ff5722;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        .big-emoji {
+            font-size: clamp(4em, 12vw, 8em);
+            display: block;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* ===== ТИТУЛЬНЫЙ СЛАЙД ===== */
+        .slide.title-slide {
+            background: linear-gradient(135deg, #ff9800 0%, #ff5722 50%, #e91e63 100%);
+            color: white;
+        }
+
+        .slide.title-slide h1 {
+            color: white;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+        }
+
+        .slide.title-slide .subtitle {
+            color: rgba(255,255,255,0.95);
+        }
+
+        /* ===== СЕТКИ ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 18px;
+            max-width: 950px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px 15px;
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.15);
+            transition: transform 0.3s;
+        }
+
+        .item:hover { transform: translateY(-5px); }
+
+        .item .icon {
+            font-size: 2.5em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .item h3 {
+            color: #e65100;
+            font-size: 1.05em;
+            margin-bottom: 5px;
+        }
+
+        .item p {
+            font-size: 0.85em;
+            color: #6d4c41;
+        }
+
+        /* ===== ФАКТЫ ===== */
+        .facts {
+            list-style: none;
+            text-align: left;
+            max-width: 850px;
+            width: 100%;
+        }
+
+        .facts li {
+            background: white;
+            padding: 15px 20px 15px 60px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            position: relative;
+            font-size: clamp(0.9em, 1.5vw, 1.1em);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.12);
+            transition: transform 0.3s;
+        }
+
+        .facts li:hover { transform: translateX(8px); }
+
+        .facts li::before {
+            content: '🍊';
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3em;
+        }
+
+        /* ===== ПОЛЬЗА ===== */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            max-width: 900px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .benefit {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #ff9800;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.12);
+        }
+
+        .benefit .vit {
+            color: #ff5722;
+            font-weight: 700;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .benefit .desc {
+            font-size: 0.9em;
+            color: #4e342e;
+        }
+
+        /* ===== ФИНАЛЬНЫЙ СЛАЙД ===== */
+        .slide.final-slide {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+        }
+
+        .slide.final-slide h1 { color: white; }
+        .slide.final-slide p { color: rgba(255,255,255,0.95); }
+
+        /* ===== УПРАВЛЕНИЕ ===== */
+        .controls {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .controls button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .controls button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 87, 34, 0.5);
+        }
+
+        .controls button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .counter {
+            font-weight: 700;
+            color: #e65100;
+            font-size: 0.95em;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* ===== ПРОГРЕСС-БАР ===== */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            width: 0;
+            background: linear-gradient(90deg, #ff9800, #ff5722);
+            transition: width 0.4s ease;
+            z-index: 100;
+            border-radius: 0 5px 5px 0;
+        }
+
+        /* ===== ДЕКОР ===== */
+        .decor {
+            position: fixed;
+            font-size: 2em;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== ВСПЛЫВАЮЩИЕ ПОДСКАЗКИ ===== */
+        .term {
+            color: #ff5722;
+            font-weight: 700;
+            border-bottom: 2px dashed #ff9800;
+            cursor: help;
+            position: relative;
+        }
+
+        .term:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3e2723;
+            color: #fff8e1;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            font-weight: 400;
+            width: max-content;
+            max-width: 280px;
+            line-height: 1.4;
+            text-align: left;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            white-space: normal;
+        }
+
+        .term:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 115%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: #3e2723;
+            z-index: 1000;
+        }
+
+        /* ===== СЛОВАРИК ===== */
+        .glossary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            max-width: 950px;
+            width: 100%;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .glossary-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.12);
+            border-left: 5px solid #ff9800;
+            transition: transform 0.3s;
+        }
+
+        .glossary-item:hover {
+            transform: translateX(6px);
+            border-left-color: #ff5722;
+        }
+
+        .glossary-item .word {
+            color: #ff5722;
+            font-weight: 800;
+            font-size: 1.05em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .glossary-item .definition {
+            font-size: 0.9em;
+            color: #4e342e;
+            line-height: 1.5;
+        }
+
+        /* ===== ГАЛЕРЕЯ НЕОБЫЧНЫХ ЦИТРУСОВ ===== */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .gallery-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 152, 0, 0.35);
+        }
+
+        .gallery-card .photo {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-card .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-card:nth-child(1) .photo { background: linear-gradient(135deg, #fff9c4, #fbc02d); }
+        .gallery-card:nth-child(2) .photo { background: linear-gradient(135deg, #fff3e0, #ff9800); }
+        .gallery-card:nth-child(3) .photo { background: linear-gradient(135deg, #f1f8e9, #aed581); }
+        .gallery-card:nth-child(4) .photo { background: linear-gradient(135deg, #fce4ec, #f06292); }
+        .gallery-card:nth-child(5) .photo { background: linear-gradient(135deg, #f3e5f5, #ba68c8); }
+        .gallery-card:nth-child(6) .photo { background: linear-gradient(135deg, #e0f7fa, #4dd0e1); }
+
+        .gallery-card .info {
+            padding: 15px 18px;
+        }
+
+        .gallery-card .info h3 {
+            color: #e65100;
+            font-size: 1.15em;
+            margin-bottom: 6px;
+        }
+
+        .gallery-card .info .origin {
+            display: inline-block;
+            font-size: 0.75em;
+            color: #ff5722;
+            background: #fff3e0;
+            padding: 2px 10px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .gallery-card .info p {
+            font-size: 0.85em;
+            color: #4e342e;
+            line-height: 1.5;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 700px) {
+            .slide { padding: 40px 25px 100px; }
+            .controls { padding: 8px 15px; }
+            .controls button { width: 40px; height: 40px; }
+            .gallery { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .gallery-card .photo { height: 100px; font-size: 3.5em; }
+            .gallery-card .info { padding: 12px; }
+            .gallery-card .info h3 { font-size: 1em; }
+            .gallery-card .info p { font-size: 0.78em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress" id="progress"></div>
+
+    <!-- ===== СЛАЙД 1: ТИТУЛ ===== -->
+    <section class="slide title-slide active">
+        <span class="big-emoji">🍊</span>
+        <h1>Цитрусы</h1>
+        <p class="subtitle">Солнечные фрукты, которые дарят здоровье и радость</p>
+        <p style="margin-top: 40px; font-size: 1em; opacity: 0.9;">
+            Доклад подготовил(а): <strong>[Твоё имя]</strong><br>
+            Класс: <strong>[Твой класс]</strong>
+        </p>
+    </section>
+
+    <!-- ===== СЛАЙД 2: ЧТО ТАКОЕ ЦИТРУСЫ ===== -->
+    <section class="slide">
+        <h2>🌱 Что такое цитрусы?</h2>
+        <p>
+            Цитрусы — это род <span class="term" data-tip="Вечнозелёные растения — те, что остаются зелёными круглый год и не сбрасывают листья на зиму">вечнозелёных</span>
+            деревьев и кустарников из семейства <strong>Рутовых</strong>.
+            Их родина — <strong>Юго-Восточная Азия</strong>.
+        </p>
+        <p style="margin-top: 25px;">
+            Оттуда они распространились по всему миру благодаря путешественникам и торговцам.
+            Сегодня цитрусы выращивают на всех континентах, кроме Антарктиды.
+        </p>
+        <p style="margin-top: 25px; font-size: 1.1em; color: #ff5722; font-weight: 600;">
+            💡 Все цитрусовые произошли от трёх «предков»:<br>
+            <span class="term" data-tip="Цитрон — древний цитрус с толстой ароматной кожурой. Именно от него произошли лимоны!">цитрона</span>,
+            мандарина и <span class="term" data-tip="Помело — самый крупный цитрус, весом до 10 кг. Его плод может быть размером с футбольный мяч!">помело</span>
+        </p>
+    </section>
+
+    <!-- ===== СЛАЙД 3: ВИДЫ ===== -->
+    <section class="slide">
+        <h2>🍋 Основные виды</h2>
+        <div class="grid">
+            <div class="item">
+                <span class="icon">🍊</span>
+                <h3>Апельсин</h3>
+                <p>Самый популярный</p>
+            </div>
+            <div class="item">
+                <span class="icon">🍋</span>
+                <h3>Лимон</h3>
+                <p>Кислый, ароматный</p>
+            </div>
+            <div class="item">
+                <span class="icon">🍈</span>
+                <h3>Лайм</h3>
+                <p>Маленький, зелёный</p>
+            </div>
+            <div class="item">
+                <span class="icon">🍊</span>
+                <h3>Мандарин</h3>
+                <p>Сладкий, легко чистится</p>
+            </div>
+            <div class="item">
+                <span class="icon">🍊</span>
+                <h3>Грейпфрут</h3>
+                <p><span class="term" data-tip="Гибрид — растение, полученное путём скрещивания двух разных видов">Гибрид</span>, крупный</p>
+            </div>
+            <div class="item">
+                <span class="icon">🍊</span>
+                <h3>Помело</h3>
+                <p>До 10 кг весом!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== СЛАЙД 4: ПОЛЬЗА ===== -->
+    <section class="slide">
+        <h2>💪 Польза для здоровья</h2>
+        <p>Цитрусы — настоящий кладезь витаминов:</p>
+        <div class="benefits">
+            <div class="benefit">
+                <span class="vit">Витамин C</span>
+                <span class="desc">Укрепляет иммунитет</span>
+            </div>
+            <div class="benefit">
+                <span class="vit">Витамин P</span>
+                <span class="desc">Укрепляет сосуды</span>
+            </div>
+            <div class="benefit">
+                <span class="vit">Клетчатка</span>
+                <span class="desc">Улучшает пищеварение</span>
+            </div>
+            <div class="benefit">
+                <span class="vit">Калий</span>
+                <span class="desc">Поддерживает сердце</span>
+            </div>
+            <div class="benefit">
+                <span class="vit"><span class="term" data-tip="Антиоксиданты — вещества, которые защищают клетки организма от старения и болезней">Антиоксиданты</span></span>
+                <span class="desc">Замедляют старение</span>
+            </div>
+        </div>
+        <p style="margin-top: 25px; font-size: 1em; color: #ff5722; font-weight: 600;">
+            💡 Один апельсин = почти суточная норма витамина C!
+        </p>
+    </section>
+
+    <!-- ===== СЛАЙД 5: ФАКТЫ ===== -->
+    <section class="slide">
+        <h2>🤓 Интересные факты</h2>
+        <ul class="facts">
+            <li>В XVIII веке морякам давали лимоны, чтобы не заболеть <span class="term" data-tip="Цинга — болезнь от нехватки витамина C. Симптомы: кровоточат дёсны, выпадают зубы, слабость. Умирали целые экипажи кораблей!">цингой</span></li>
+            <li>Мандарины стали символом Нового года в СССР</li>
+            <li>Одно цитрусовое дерево живёт <strong>более 100 лет</strong></li>
+            <li>«Апельсин» в переводе с голландского — «китайское яблоко»</li>
+            <li><span class="term" data-tip="Кумкват — мини-цитрус размером с грецкий орех. Его едят целиком, вместе со сладкой кожурой!">Кумкват</span> — единственный цитрус, который едят <strong>вместе с кожурой</strong></li>
+            <li>Помело — самый большой цитрус, до <strong>10 кг</strong></li>
+        </ul>
+    </section>
+
+    <!-- ===== СЛАЙД 6: НЕОБЫЧНЫЕ ЦИТРУСЫ ===== -->
+    <section class="slide">
+        <h2>🌟 Необычные цитрусы</h2>
+        <div class="gallery">
+            <div class="gallery-card">
+                <div class="photo">🍋</div>
+                <div class="info">
+                    <h3>Цитрон</h3>
+                    <span class="origin">Индия, Китай</span>
+                    <p>Древний цитрус с толстой ароматной кожурой. Один из трёх «предков» всех цитрусовых. Сорт «Рука Будды» похож на пальцы!</p>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="photo">🍊</div>
+                <div class="info">
+                    <h3>Кумкват</h3>
+                    <span class="origin">Китай</span>
+                    <p>Мини-цитрус размером с грецкий орех. Единственный, который едят целиком, вместе со сладкой кожурой. Название переводится как «золотой апельсин».</p>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="photo">🍈</div>
+                <div class="info">
+                    <h3>Юдзу</h3>
+                    <span class="origin">Япония, Корея</span>
+                    <p>Гибрид мандарина и лимона. Аромат — как у смеси лимона, мандарина и грейпфрута. В Японии его добавляют в чай и соусы.</p>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="photo">🍊</div>
+                <div class="info">
+                    <h3><strong>Свити</strong></h3>
+                    <span class="origin">Израиль</span>
+                    <p>Гибрид помело и белого грейпфрута. Очень сладкий, совсем не горчит. Название означает «сладкий» — и это правда!</p>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="photo">🍇</div>
+                <div class="info">
+                    <h3>Пальчиковый лайм</h3>
+                    <span class="origin">Австралия</span>
+                    <p>Внутри — мякоть в виде маленьких шариков, похожих на икру. Взрывается во рту! Деликатес дорогих ресторанов.</p>
+                </div>
+            </div>
+
+            <div class="gallery-card">
+                <div class="photo">🍊</div>
+                <div class="info">
+                    <h3>Бергамот</h3>
+                    <span class="origin">Италия</span>
+                    <p>Гибрид померанца и цитрона. Его аромат знают все — это вкус чая «Эрл Грей». Из кожуры делают эфирное масло.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== СЛАЙД 7: СЛОВАРИК ===== -->
+    <section class="slide">
+        <h2>📖 Словарик</h2>
+        <div class="glossary">
+            <div class="glossary-item">
+                <span class="word">Гесперидии</span>
+                <span class="definition">Научное название плодов цитрусовых. Происходит из греческого мифа о золотых яблоках в саду Гесперид.</span>
+            </div>
+            <div class="glossary-item">
+                <span class="word">Гибрид</span>
+                <span class="definition">Растение, полученное путём скрещивания двух разных видов. Апельсин — гибрид помело и мандарина.</span>
+            </div>
+            <div class="glossary-item">
+                <span class="word">Вечнозелёные</span>
+                <span class="definition">Растения, которые остаются зелёными круглый год и не сбрасывают листья на зиму.</span>
+            </div>
+            <div class="glossary-item">
+                <span class="word">Цинга</span>
+                <span class="definition">Болезнь от нехватки витамина C: кровоточат дёсны, выпадают зубы, слабость. Лечится цитрусами.</span>
+            </div>
+            <div class="glossary-item">
+                <span class="word">Помело</span>
+                <span class="definition">Самый крупный цитрус, до 10 кг. Прародитель апельсина и грейпфрута.</span>
+            </div>
+            <div class="glossary-item">
+                <span class="word">Кумкват</span>
+                <span class="definition">Мини-цитрус размером с орех. Единственный, который едят вместе с кожурой.</span>
+            </div>
+            <div class="glossary-item">
+                <span class="word">Цитрон</span>
+                <span class="definition">Древний цитрус с толстой ароматной кожурой. «Рука Будды» — его знаменитый сорт.</span>
+            </div>
+            <div class="glossary-item">
+                <span class="word">Антиоксиданты</span>
+                <span class="definition">Вещества, которые защищают клетки организма от старения и болезней.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== СЛАЙД 8: ЗАКЛЮЧЕНИЕ ===== -->
+    <section class="slide final-slide">
+        <span class="big-emoji">🍊🍋🍈</span>
+        <h1>Спасибо за внимание!</h1>
+        <p style="margin-top: 25px; font-size: 1.2em;">
+            Ешьте цитрусы — и будьте здоровы!
+        </p>
+        <p style="margin-top: 40px; font-size: 1em; opacity: 0.9;">
+            Готов(а) ответить на ваши вопросы 💬
+        </p>
+    </section>
+
+    <!-- ===== УПРАВЛЕНИЕ ===== -->
+    <div class="controls">
+        <button id="prev" title="Назад (←)">←</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="next" title="Вперёд (→)">→</button>
+    </div>
+
+    <!-- ===== ДЕКОР ===== -->
+    <span class="decor" style="top:5%; left:3%;">🍊</span>
+    <span class="decor" style="top:85%; left:92%;">🍋</span>
+    <span class="decor" style="top:50%; left:95%;">🍈</span>
+    <span class="decor" style="top:90%; left:5%;">🍊</span>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.getElementById('counter');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        const progress = document.getElementById('progress');
+        let current = 0;
+
+        function showSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+            slides[current].classList.remove('active');
+            current = index;
+            slides[current].classList.add('active');
+
+            counter.textContent = (current + 1) + ' / ' + slides.length;
+            prevBtn.disabled = current === 0;
+            nextBtn.disabled = current === slides.length - 1;
+            progress.style.width = ((current + 1) / slides.length) * 100 + '%';
+        }
+
+        showSlide(0);
+
+        prevBtn.onclick = function() { showSlide(current - 1); };
+        nextBtn.onclick = function() { showSlide(current + 1); };
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                showSlide(current + 1);
+            } else if (e.key === 'ArrowLeft') {
+                showSlide(current - 1);
+            } else if (e.key === 'Home') {
+                showSlide(0);
+            } else if (e.key === 'End') {
+                showSlide(slides.length - 1);
+            }
+        });
+
+        let touchStartX = 0;
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+        });
+        document.addEventListener('touchend', function(e) {
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) showSlide(current + 1);
+                else showSlide(current - 1);
+            }
+        });
+    </script>
+
+</body>
+</html>
