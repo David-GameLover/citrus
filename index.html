@@ -7,22 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #1a0e05;
-            overflow: hidden;
-            height: 100vh;
-            color: #3e2723;
-        }
-
+        body { font-family: 'Poppins', sans-serif; background: #1a0e05; overflow: hidden; height: 100vh; color: #3e2723; }
         @keyframes gradientShift {
             0%   { background-position: 0% 50%; }
             50%  { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* ===== ЧАСТИЦЫ ===== */
         .particles { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
         .particle {
             position: absolute; font-size: 1.5em; opacity: 0;
@@ -31,31 +22,71 @@
         }
         @keyframes floatUp {
             0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
+            10% { opacity: 0.7; } 90% { opacity: 0.7; }
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* ===== ИСКРЫ ===== */
-        .sparkle {
-            position: fixed; pointer-events: none; z-index: 9998; font-size: 0.9em;
-            animation: sparkleOut 0.9s ease-out forwards;
-        }
+        .sparkle { position: fixed; pointer-events: none; z-index: 9998; font-size: 0.9em; animation: sparkleOut 0.9s ease-out forwards; }
         @keyframes sparkleOut {
             0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
             100% { transform: translate(var(--dx), var(--dy)) scale(0) rotate(180deg); opacity: 0; }
         }
 
-        /* ===== ВСПЫШКА ===== */
-        .screen-flash {
-            position: fixed; inset: 0;
-            pointer-events: none; z-index: 9997; opacity: 0;
-        }
+        .screen-flash { position: fixed; inset: 0; pointer-events: none; z-index: 9997; opacity: 0; }
         .screen-flash.flash-green { animation: flashGreen 0.6s ease-out; }
         @keyframes flashGreen {
             0% { opacity: 0; background: radial-gradient(circle, rgba(76,175,80,0.8), transparent 70%); }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+            50% { opacity: 1; } 100% { opacity: 0; }
+        }
+
+        /* ===== ШАПКА (оранжевый баннер) ===== */
+        .top-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background: linear-gradient(90deg, #ff9800, #ff5722, #e91e63, #ff9800);
+            background-size: 300% 100%;
+            animation: gradientShift 8s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: white;
+            z-index: 200;
+            box-shadow: 0 4px 25px rgba(255, 87, 34, 0.5);
+            font-family: 'Comfortaa', cursive;
+            padding: 0 70px;
+        }
+
+        .top-header-icon {
+            font-size: 1.6em;
+            animation: bounceGlow 2s infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+        @keyframes bounceGlow {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.1); }
+        }
+
+        .top-header-title {
+            font-size: clamp(1em, 2vw, 1.3em);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+            transition: opacity 0.4s;
+        }
+
+        .top-header-title.changing { opacity: 0; }
+
+        /* ===== ПРОГРЕСС-БАР (тонкий под шапкой) ===== */
+        .progress {
+            position: fixed; top: 70px; left: 0; height: 4px; width: 0;
+            background: linear-gradient(90deg, #ffc107, #ff5722, #e91e63);
+            background-size: 200% 100%;
+            animation: gradientShift 3s linear infinite;
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 200;
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.9);
         }
 
         /* ===== СЛАЙДЫ ===== */
@@ -63,7 +94,7 @@
             position: absolute; inset: 0;
             display: flex; flex-direction: column;
             justify-content: flex-start; align-items: center;
-            padding: 25px 60px 90px;
+            padding: 95px 60px 90px;
             opacity: 0; transform: scale(0.85) rotateY(15deg);
             transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
                         transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -101,24 +132,14 @@
             border-radius: 3px; box-shadow: 0 0 15px rgba(255, 152, 0, 0.7);
         }
 
-        .slide p {
-            font-size: clamp(0.95em, 1.6vw, 1.15em);
-            max-width: 900px; line-height: 1.6; color: #4e342e;
-        }
-        .slide .subtitle {
-            font-size: clamp(1em, 2vw, 1.4em);
-            color: #ff5722; margin-top: 15px; font-weight: 600;
-        }
+        .slide p { font-size: clamp(0.95em, 1.6vw, 1.15em); max-width: 900px; line-height: 1.6; color: #4e342e; }
+        .slide .subtitle { font-size: clamp(1em, 2vw, 1.4em); color: #ff5722; margin-top: 15px; font-weight: 600; }
 
         .big-emoji {
             font-size: clamp(3.5em, 10vw, 6em);
             display: block; margin-bottom: 15px;
             animation: bounceGlow 2s infinite;
             filter: drop-shadow(0 0 20px rgba(255, 152, 0, 0.6));
-        }
-        @keyframes bounceGlow {
-            0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 20px rgba(255, 152, 0, 0.6)); }
-            50% { transform: translateY(-15px) scale(1.05); filter: drop-shadow(0 0 35px rgba(255, 152, 0, 0.9)); }
         }
 
         .slide.title-slide {
@@ -130,11 +151,7 @@
         .slide.title-slide h1 { color: white; text-shadow: 3px 3px 0 rgba(0,0,0,0.15), 0 0 30px rgba(255,255,255,0.4); }
         .slide.title-slide .subtitle { color: rgba(255,255,255,0.95); }
 
-        /* ===== СЕТКИ ===== */
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 14px; max-width: 950px; width: 100%; margin-top: 10px;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; max-width: 950px; width: 100%; margin-top: 10px; }
         .item {
             background: white; border-radius: 14px; padding: 16px 12px;
             box-shadow: 0 5px 16px rgba(255, 152, 0, 0.15);
@@ -154,7 +171,6 @@
         .item h3 { color: #e65100; font-size: 1em; margin-bottom: 4px; }
         .item p { font-size: 0.8em; color: #6d4c41; }
 
-        /* ===== ФАКТЫ ===== */
         .facts { list-style: none; text-align: left; max-width: 850px; width: 100%; }
         .facts li {
             background: white; padding: 12px 18px 12px 55px;
@@ -185,26 +201,17 @@
             to { transform: translateY(-50%) rotate(360deg); }
         }
 
-        /* ===== ПОЛЬЗА ===== */
-        .benefits {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px; max-width: 900px; width: 100%; margin-top: 10px;
-        }
+        .benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; max-width: 900px; width: 100%; margin-top: 10px; }
         .benefit {
             background: white; padding: 16px; border-radius: 14px;
             border-left: 5px solid #ff9800; text-align: left;
             box-shadow: 0 4px 12px rgba(255, 152, 0, 0.12);
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .benefit:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 10px 25px rgba(255, 152, 0, 0.35);
-            border-left-color: #e91e63;
-        }
+        .benefit:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 10px 25px rgba(255, 152, 0, 0.35); border-left-color: #e91e63; }
         .benefit .vit { color: #ff5722; font-weight: 700; font-size: 1em; display: block; margin-bottom: 4px; }
         .benefit .desc { font-size: 0.85em; color: #4e342e; }
 
-        /* ===== ФИНАЛ ===== */
         .slide.final-slide {
             background: linear-gradient(135deg, #ff9800, #ff5722, #e91e63);
             background-size: 300% 300%;
@@ -214,7 +221,6 @@
         .slide.final-slide h1 { color: white; }
         .slide.final-slide p { color: rgba(255,255,255,0.95); }
 
-        /* ===== УПРАВЛЕНИЕ ===== */
         .controls {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             display: flex; gap: 12px; align-items: center;
@@ -227,7 +233,7 @@
             width: 42px; height: 42px; border-radius: 50%; border: none;
             background: linear-gradient(135deg, #ff9800, #ff5722);
             color: white; font-size: 1.15em; cursor: pointer;
-            transition: all 0.3s; position: relative; overflow: hidden;
+            transition: all 0.3s;
         }
         .controls button:hover { transform: scale(1.15); box-shadow: 0 0 25px rgba(255, 152, 0, 0.9); }
         .controls button:active { transform: scale(0.95); }
@@ -235,37 +241,22 @@
         .counter { font-weight: 700; color: #e65100; font-size: 0.9em; min-width: 55px; text-align: center; }
 
         .sound-toggle {
-            position: fixed; top: 20px; right: 20px;
-            width: 45px; height: 45px; border-radius: 50%; border: none;
-            background: rgba(255, 255, 255, 0.9); font-size: 1.3em;
+            position: absolute;
+            right: 15px;
+            width: 44px; height: 44px; border-radius: 50%; border: none;
+            background: rgba(255, 255, 255, 0.95); font-size: 1.2em;
             cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            z-index: 100; transition: all 0.3s; backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center;
         }
         .sound-toggle:hover { transform: scale(1.1) rotate(15deg); box-shadow: 0 6px 20px rgba(255, 152, 0, 0.5); }
 
-        /* ===== ПРОГРЕСС-БАР ===== */
-        .progress {
-            position: fixed; top: 0; left: 0; height: 5px; width: 0;
-            background: linear-gradient(90deg, #ff9800, #ffc107, #ff5722);
-            background-size: 200% 100%;
-            animation: gradientShift 3s linear infinite;
-            transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 100; border-radius: 0 5px 5px 0;
-            box-shadow: 0 0 15px rgba(255, 152, 0, 0.8);
-        }
-
-        /* ===== ДЕКОР ===== */
-        .decor {
-            position: fixed; font-size: 2em; opacity: 0.1;
-            pointer-events: none; z-index: 0;
-            animation: floatSlow 6s ease-in-out infinite;
-        }
+        .decor { position: fixed; font-size: 2em; opacity: 0.1; pointer-events: none; z-index: 0; animation: floatSlow 6s ease-in-out infinite; }
         @keyframes floatSlow {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-20px) rotate(15deg); }
         }
 
-        /* ===== ПОДСКАЗКИ ===== */
         .term {
             color: #ff5722; font-weight: 700;
             border-bottom: 2px dashed #ff9800;
@@ -280,7 +271,7 @@
             font-size: 0.85em; font-weight: 400;
             width: max-content; max-width: 280px;
             line-height: 1.4; text-align: left;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3), 0 0 20px rgba(255, 152, 0, 0.4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             z-index: 1000; white-space: normal;
             animation: popIn 0.3s ease;
         }
@@ -294,30 +285,18 @@
             border-top-color: #3e2723; z-index: 1000;
         }
 
-        /* ===== СЛОВАРИК ===== */
-        .glossary {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 10px; max-width: 950px; width: 100%; margin-top: 10px; text-align: left;
-        }
+        .glossary { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; max-width: 950px; width: 100%; margin-top: 10px; text-align: left; }
         .glossary-item {
             background: white; border-radius: 12px; padding: 12px 16px;
             box-shadow: 0 4px 12px rgba(255, 152, 0, 0.12);
             border-left: 5px solid #ff9800;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .glossary-item:hover {
-            transform: translateX(10px) scale(1.02);
-            border-left-color: #e91e63;
-            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
-        }
+        .glossary-item:hover { transform: translateX(10px) scale(1.02); border-left-color: #e91e63; }
         .glossary-item .word { color: #ff5722; font-weight: 800; font-size: 0.95em; display: block; margin-bottom: 4px; }
         .glossary-item .definition { font-size: 0.78em; color: #4e342e; line-height: 1.4; }
 
-        /* ===== ГАЛЕРЕЯ ===== */
-        .gallery {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 14px; max-width: 950px; width: 100%; margin-top: 10px; text-align: left;
-        }
+        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 950px; width: 100%; margin-top: 10px; text-align: left; }
         .gallery-card {
             background: white; border-radius: 12px; overflow: hidden;
             box-shadow: 0 4px 14px rgba(255, 152, 0, 0.15);
@@ -335,18 +314,9 @@
             from { opacity: 0; transform: translateY(30px) rotateX(-15deg); }
             to { opacity: 1; transform: translateY(0) rotateX(0); }
         }
-        .gallery-card:hover {
-            transform: translateY(-8px) scale(1.04);
-            box-shadow: 0 15px 35px rgba(255, 152, 0, 0.5), 0 0 30px rgba(255, 152, 0, 0.3);
-        }
-        .gallery-card .photo {
-            height: 150px; display: flex; align-items: center; justify-content: center;
-            position: relative; overflow: hidden; background: #fff3e0; cursor: zoom-in;
-        }
-        .gallery-card .photo img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
+        .gallery-card:hover { transform: translateY(-8px) scale(1.04); box-shadow: 0 15px 35px rgba(255, 152, 0, 0.5); }
+        .gallery-card .photo { height: 150px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background: #fff3e0; cursor: zoom-in; }
+        .gallery-card .photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .gallery-card .photo:hover img { transform: scale(1.15); }
         .gallery-card .photo::after {
             content: '🔍'; position: absolute; top: 8px; right: 8px;
@@ -358,67 +328,21 @@
         .gallery-card .photo:hover::after { opacity: 1; transform: scale(1); }
         .gallery-card .info { padding: 10px 14px; }
         .gallery-card .info h3 { color: #e65100; font-size: 1em; margin-bottom: 4px; }
-        .gallery-card .info .origin {
-            display: inline-block; font-size: 0.65em; color: #ff5722;
-            background: #fff3e0; padding: 2px 8px; border-radius: 10px;
-            margin-bottom: 5px; font-weight: 600;
-        }
+        .gallery-card .info .origin { display: inline-block; font-size: 0.65em; color: #ff5722; background: #fff3e0; padding: 2px 8px; border-radius: 10px; margin-bottom: 5px; font-weight: 600; }
         .gallery-card .info p { font-size: 0.75em; color: #4e342e; line-height: 1.4; }
 
-        /* ===== ВИКТОРИНА ===== */
-        .quiz {
-            max-width: 850px; width: 100%;
-            background: white; border-radius: 20px;
-            padding: 25px 35px;
-            box-shadow: 0 10px 40px rgba(255, 152, 0, 0.2);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .quiz::before {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; height: 6px;
-            background: linear-gradient(90deg, #ff9800, #ffc107, #ff5722, #e91e63);
-            background-size: 300% 100%;
-            animation: gradientShift 4s linear infinite;
-        }
-
-        .quiz-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 15px; padding-bottom: 12px;
-            border-bottom: 2px dashed #ffe0b2;
-        }
+        .quiz { max-width: 850px; width: 100%; background: white; border-radius: 20px; padding: 25px 35px; box-shadow: 0 10px 40px rgba(255, 152, 0, 0.2); text-align: center; position: relative; overflow: hidden; }
+        .quiz::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #ff9800, #ffc107, #ff5722, #e91e63); background-size: 300% 100%; animation: gradientShift 4s linear infinite; }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 2px dashed #ffe0b2; }
         .quiz-progress { font-size: 0.85em; color: #ff5722; font-weight: 700; }
         .quiz-score { font-size: 0.85em; color: #e65100; font-weight: 700; }
-
-        .quiz-dots {
-            display: flex; gap: 6px; justify-content: center;
-            margin-bottom: 18px;
-        }
-        .quiz-dot {
-            width: 12px; height: 12px; border-radius: 50%;
-            background: #ffe0b2; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .quiz-dot.current {
-            background: #ff9800; transform: scale(1.4);
-            box-shadow: 0 0 12px rgba(255, 152, 0, 0.8);
-        }
+        .quiz-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 18px; }
+        .quiz-dot { width: 12px; height: 12px; border-radius: 50%; background: #ffe0b2; transition: all 0.4s; }
+        .quiz-dot.current { background: #ff9800; transform: scale(1.4); box-shadow: 0 0 12px rgba(255, 152, 0, 0.8); }
         .quiz-dot.correct { background: #4caf50; box-shadow: 0 0 10px rgba(76, 175, 80, 0.6); }
         .quiz-dot.wrong { background: #f44336; box-shadow: 0 0 10px rgba(244, 67, 54, 0.6); }
-
-        .quiz-question {
-            font-family: 'Comfortaa', cursive;
-            font-size: clamp(1.05em, 1.8vw, 1.3em);
-            color: #e65100; margin-bottom: 20px; line-height: 1.4;
-            min-height: 50px;
-        }
-
-        .quiz-options {
-            display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 10px; margin-bottom: 15px;
-        }
-
+        .quiz-question { font-family: 'Comfortaa', cursive; font-size: clamp(1.05em, 1.8vw, 1.3em); color: #e65100; margin-bottom: 20px; line-height: 1.4; min-height: 50px; }
+        .quiz-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
         .quiz-option {
             background: #fff8e1; border: 3px solid #ffe0b2;
             border-radius: 12px; padding: 12px 18px;
@@ -427,178 +351,71 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-align: left; position: relative; overflow: hidden;
         }
-        .quiz-option:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.02);
-            background: #ffe0b2; border-color: #ff9800;
-            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
-        }
+        .quiz-option:hover:not(:disabled) { transform: translateY(-3px) scale(1.02); background: #ffe0b2; border-color: #ff9800; box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3); }
         .quiz-option:disabled { cursor: not-allowed; }
-
-        .quiz-option.correct {
-            background: linear-gradient(135deg, #4caf50, #66bb6a);
-            color: white; border-color: #4caf50;
-            animation: correctPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 25px rgba(76, 175, 80, 0.6);
-        }
-        .quiz-option.wrong {
-            background: linear-gradient(135deg, #f44336, #ef5350);
-            color: white; border-color: #f44336;
-            animation: wrongShake 0.5s ease;
-        }
-        .quiz-option.reveal-correct {
-            background: linear-gradient(135deg, #4caf50, #66bb6a);
-            color: white; border-color: #4caf50;
-            animation: pulseGreen 1s ease infinite alternate;
-        }
+        .quiz-option.correct { background: linear-gradient(135deg, #4caf50, #66bb6a); color: white; border-color: #4caf50; animation: correctPop 0.6s; box-shadow: 0 0 25px rgba(76, 175, 80, 0.6); }
+        .quiz-option.wrong { background: linear-gradient(135deg, #f44336, #ef5350); color: white; border-color: #f44336; animation: wrongShake 0.5s ease; }
+        .quiz-option.reveal-correct { background: linear-gradient(135deg, #4caf50, #66bb6a); color: white; border-color: #4caf50; animation: pulseGreen 1s ease infinite alternate; }
         .quiz-option.faded { opacity: 0.4; }
-
-        @keyframes correctPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.12); }
-            100% { transform: scale(1); }
-        }
-        @keyframes wrongShake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-10px); }
-            40% { transform: translateX(10px); }
-            60% { transform: translateX(-8px); }
-            80% { transform: translateX(8px); }
-        }
-        @keyframes pulseGreen {
-            from { box-shadow: 0 0 0 rgba(76, 175, 80, 0.5); }
-            to { box-shadow: 0 0 30px rgba(76, 175, 80, 0.9); }
-        }
-
-        .quiz-message {
-            font-size: 0.95em; font-weight: 700;
-            min-height: 26px; margin-bottom: 12px; transition: all 0.3s;
-        }
+        @keyframes correctPop { 0% { transform: scale(1); } 50% { transform: scale(1.12); } 100% { transform: scale(1); } }
+        @keyframes wrongShake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-10px); } 40% { transform: translateX(10px); } 60% { transform: translateX(-8px); } 80% { transform: translateX(8px); } }
+        @keyframes pulseGreen { from { box-shadow: 0 0 0 rgba(76, 175, 80, 0.5); } to { box-shadow: 0 0 30px rgba(76, 175, 80, 0.9); } }
+        .quiz-message { font-size: 0.95em; font-weight: 700; min-height: 26px; margin-bottom: 12px; transition: all 0.3s; }
         .quiz-message.error { color: #f44336; }
         .quiz-message.success { color: #4caf50; }
-
         .quiz-next {
             background: linear-gradient(135deg, #ff9800, #ff5722);
             color: white; border: none; padding: 11px 28px;
             border-radius: 30px; font-family: inherit;
             font-size: 0.95em; font-weight: 700; cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+            transition: all 0.3s; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
             display: none;
         }
-        .quiz-next:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 25px rgba(255, 87, 34, 0.6); }
-        .quiz-next.show { display: inline-block; animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .quiz-next:hover { transform: translateY(-3px) scale(1.05); }
+        .quiz-next.show { display: inline-block; animation: popIn 0.4s; }
 
-        /* ===== РЕЗУЛЬТАТ ===== */
-        .quiz-result {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            padding: 15px 0;
-        }
+        .quiz-result { display: none; flex-direction: column; align-items: center; gap: 15px; padding: 15px 0; }
         .quiz-result.show { display: flex; animation: resultIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes resultIn {
-            from { opacity: 0; transform: scale(0.3) rotate(-15deg); }
-            to { opacity: 1; transform: scale(1) rotate(0); }
-        }
-
+        @keyframes resultIn { from { opacity: 0; transform: scale(0.3) rotate(-15deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
         .result-grade {
             font-family: 'Comfortaa', cursive;
             font-size: clamp(5em, 15vw, 9em);
-            font-weight: 800;
-            line-height: 1;
+            font-weight: 800; line-height: 1;
             background: linear-gradient(135deg, #ff9800, #ff5722, #e91e63);
             background-size: 200% 200%;
             animation: gradientShift 3s ease infinite, gradePopIn 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
             filter: drop-shadow(0 8px 20px rgba(255, 87, 34, 0.4));
         }
-        @keyframes gradePopIn {
-            0% { transform: scale(0) rotate(-180deg); }
-            60% { transform: scale(1.3) rotate(20deg); }
-            100% { transform: scale(1) rotate(0); }
-        }
+        @keyframes gradePopIn { 0% { transform: scale(0) rotate(-180deg); } 60% { transform: scale(1.3) rotate(20deg); } 100% { transform: scale(1) rotate(0); } }
+        .result-text { font-size: clamp(1.1em, 2vw, 1.5em); font-weight: 700; color: #e65100; }
+        .result-stats { font-size: 1em; color: #4e342e; background: #fff8e1; padding: 10px 25px; border-radius: 25px; border: 2px dashed #ffcc80; }
+        .quiz-restart { background: white; color: #ff5722; border: 3px solid #ff5722; padding: 10px 25px; border-radius: 30px; font-family: inherit; font-size: 0.9em; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .quiz-restart:hover { background: #ff5722; color: white; transform: translateY(-3px) scale(1.05); }
 
-        .result-text {
-            font-size: clamp(1.1em, 2vw, 1.5em);
-            font-weight: 700; color: #e65100;
-        }
-        .result-stats {
-            font-size: 1em; color: #4e342e;
-            background: #fff8e1; padding: 10px 25px;
-            border-radius: 25px;
-            border: 2px dashed #ffcc80;
-        }
-
-        .quiz-restart {
-            background: white; color: #ff5722;
-            border: 3px solid #ff5722;
-            padding: 10px 25px; border-radius: 30px;
-            font-family: inherit; font-size: 0.9em;
-            font-weight: 700; cursor: pointer;
-            transition: all 0.3s;
-        }
-        .quiz-restart:hover {
-            background: #ff5722; color: white;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(255, 87, 34, 0.5);
-        }
-
-        /* ===== ЛАЙТБОКС ===== */
-        .lightbox {
-            position: fixed; inset: 0;
-            background: rgba(0, 0, 0, 0.92);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 9999; opacity: 0; pointer-events: none;
-            transition: opacity 0.35s ease;
-            cursor: zoom-out; padding: 30px;
-            backdrop-filter: blur(8px);
-        }
+        .lightbox { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.35s; cursor: zoom-out; padding: 30px; backdrop-filter: blur(8px); }
         .lightbox.active { opacity: 1; pointer-events: auto; }
-        .lightbox img {
-            max-width: 95%; max-height: 90vh;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 152, 0, 0.4);
-            transform: scale(0.3) rotate(-15deg);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
+        .lightbox img { max-width: 95%; max-height: 90vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); transform: scale(0.3) rotate(-15deg); transition: transform 0.5s; }
         .lightbox.active img { transform: scale(1) rotate(0); }
-        .lightbox-close {
-            position: absolute; top: 20px; right: 25px;
-            color: white; font-size: 2.5em; cursor: pointer;
-            background: rgba(255, 255, 255, 0.15);
-            width: 55px; height: 55px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s; line-height: 1;
-        }
+        .lightbox-close { position: absolute; top: 20px; right: 25px; color: white; font-size: 2.5em; cursor: pointer; background: rgba(255, 255, 255, 0.15); width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s; line-height: 1; }
         .lightbox-close:hover { background: rgba(255, 255, 255, 0.3); transform: rotate(90deg) scale(1.1); }
-        .lightbox-caption {
-            position: absolute; bottom: 25px; left: 50%;
-            transform: translateX(-50%);
-            color: white; background: rgba(255, 255, 255, 0.15);
-            padding: 10px 25px; border-radius: 30px;
-            font-size: 1.1em; font-weight: 600;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 25px rgba(255, 152, 0, 0.4);
-        }
+        .lightbox-caption { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); color: white; background: rgba(255, 255, 255, 0.15); padding: 10px 25px; border-radius: 30px; font-size: 1.1em; font-weight: 600; backdrop-filter: blur(10px); }
 
-        /* ===== КОНФЕТТИ ===== */
-        .confetti {
-            position: fixed; pointer-events: none;
-            font-size: 1.8em; z-index: 9999;
-            animation: confettiFall 2.5s ease-out forwards;
-        }
+        .confetti { position: fixed; pointer-events: none; font-size: 1.8em; z-index: 9999; animation: confettiFall 2.5s ease-out forwards; }
         @keyframes confettiFall {
             0% { transform: translateY(0) rotate(0deg) scale(0); opacity: 1; }
             15% { transform: translateY(-100px) rotate(180deg) scale(1.2); opacity: 1; }
             100% { transform: translateY(110vh) rotate(720deg) scale(0.8); opacity: 0; }
         }
 
-        /* ===== АДАПТИВ ===== */
         @media (max-width: 700px) {
-            .slide { padding: 20px 15px 85px; }
+            .top-header { height: 60px; padding: 0 55px; }
+            .top-header-title { font-size: 0.95em; }
+            .top-header-icon { font-size: 1.3em; }
+            .progress { top: 60px; }
+            .sound-toggle { width: 38px; height: 38px; font-size: 1em; right: 10px; }
+            .slide { padding: 80px 15px 85px; }
             .controls { padding: 6px 12px; }
             .controls button { width: 38px; height: 38px; }
             .gallery { grid-template-columns: repeat(2, 1fr); gap: 8px; }
@@ -607,7 +424,6 @@
             .gallery-card .info h3 { font-size: 0.9em; }
             .gallery-card .info p { font-size: 0.7em; }
             .lightbox-close { font-size: 2em; width: 45px; height: 45px; }
-            .sound-toggle { width: 40px; height: 40px; font-size: 1.1em; }
             .quiz { padding: 18px 20px; }
             .quiz-options { grid-template-columns: 1fr; }
             .quiz-option { padding: 10px 14px; font-size: 0.88em; }
@@ -616,11 +432,16 @@
 </head>
 <body>
 
+    <!-- ===== ШАПКА ===== -->
+    <header class="top-header">
+        <span class="top-header-icon">🍊</span>
+        <span class="top-header-title" id="headerTitle">Цитрусы</span>
+        <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Звук">🔇</button>
+    </header>
     <div class="progress" id="progress"></div>
+
     <div class="particles" id="particles"></div>
     <div class="screen-flash" id="screenFlash"></div>
-
-    <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Звук">🔇</button>
 
     <div class="lightbox" id="lightbox">
         <span class="lightbox-close" onclick="closeLightbox()">×</span>
@@ -639,7 +460,7 @@
         </p>
     </section>
 
-    <!-- ===== СЛАЙД 2: ЧТО ТАКОЕ ===== -->
+    <!-- ===== СЛАЙД 2 ===== -->
     <section class="slide">
         <h2>🌱 Что такое цитрусы?</h2>
         <p>
@@ -654,11 +475,11 @@
         <p style="margin-top: 20px; font-size: 1em; color: #ff5722; font-weight: 600;">
             💡 Все цитрусовые произошли от трёх «предков»:<br>
             <span class="term" data-tip="Цитрон — древний цитрус с толстой ароматной кожурой. Именно от него произошли лимоны!">цитрона</span>,
-            мандарина и <span class="term" data-tip="Помело — самый крупный цитрус, весом до 10 кг. Его плод может быть размером с футбольный мяч!">помело</span>
+            мандарина и <span class="term" data-tip="Помело — самый крупный цитрус, весом до 10 кг!">помело</span>
         </p>
     </section>
 
-    <!-- ===== СЛАЙД 3: ВИДЫ ===== -->
+    <!-- ===== СЛАЙД 3 ===== -->
     <section class="slide">
         <h2>🍋 Основные виды</h2>
         <div class="grid">
@@ -671,7 +492,7 @@
         </div>
     </section>
 
-    <!-- ===== СЛАЙД 4: ПОЛЬЗА ===== -->
+    <!-- ===== СЛАЙД 4 ===== -->
     <section class="slide">
         <h2>💪 Польза для здоровья</h2>
         <p>Цитрусы — настоящий <span class="term" data-tip="Кладезь — источник, хранилище чего-то ценного. «Кладезь витаминов» = источник множества витаминов.">кладезь</span> витаминов:</p>
@@ -687,63 +508,63 @@
         </p>
     </section>
 
-    <!-- ===== СЛАЙД 5: ФАКТЫ ===== -->
+    <!-- ===== СЛАЙД 5 ===== -->
     <section class="slide">
         <h2>🤓 Интересные факты</h2>
         <ul class="facts">
-            <li>В XVIII веке морякам давали лимоны, чтобы не заболеть <span class="term" data-tip="Цинга — болезнь от нехватки витамина C. Симптомы: кровоточат дёсны, выпадают зубы, слабость. Умирали целые экипажи кораблей!">цингой</span></li>
+            <li>В XVIII веке морякам давали лимоны, чтобы не заболеть <span class="term" data-tip="Цинга — болезнь от нехватки витамина C.">цингой</span></li>
             <li>Мандарин стал символом Нового года в СССР начиная с <strong>1960-х годов</strong></li>
             <li>Одно цитрусовое дерево живёт <strong>более 100 лет</strong></li>
             <li>«Апельсин» в переводе с голландского — «китайское яблоко»</li>
-            <li><span class="term" data-tip="Кумкват — мини-цитрус размером с грецкий орех. Его едят целиком, вместе со сладкой кожурой!">Кумкват</span> — единственный цитрус, который едят <strong>вместе с кожурой</strong></li>
+            <li><span class="term" data-tip="Кумкват — мини-цитрус, его едят целиком!">Кумкват</span> — единственный цитрус, который едят <strong>вместе с кожурой</strong></li>
             <li>Помело — самый большой цитрус, до <strong>10 кг</strong></li>
         </ul>
     </section>
 
-    <!-- ===== СЛАЙД 6: НЕОБЫЧНЫЕ ===== -->
+    <!-- ===== СЛАЙД 6 ===== -->
     <section class="slide">
         <h2>🌟 Необычные цитрусы</h2>
         <div class="gallery">
             <div class="gallery-card">
                 <div class="photo" onclick="openLightbox('images/citron.jpg', 'Цитрон')"><img src="images/citron.jpg" alt="Цитрон"></div>
-                <div class="info"><h3>Цитрон</h3><span class="origin">Индия, Китай</span><p>Древний цитрус с толстой кожурой. Один из трёх «предков» всех цитрусовых.</p></div>
+                <div class="info"><h3>Цитрон</h3><span class="origin">Индия, Китай</span><p>Древний цитрус с толстой кожурой.</p></div>
             </div>
             <div class="gallery-card">
                 <div class="photo" onclick="openLightbox('images/kumquat.jpg', 'Кумкват')"><img src="images/kumquat.jpg" alt="Кумкват"></div>
-                <div class="info"><h3>Кумкват</h3><span class="origin">Китай</span><p>Мини-цитрус. Единственный, который едят целиком вместе с кожурой.</p></div>
+                <div class="info"><h3>Кумкват</h3><span class="origin">Китай</span><p>Мини-цитрус. Едят с кожурой.</p></div>
             </div>
             <div class="gallery-card">
                 <div class="photo" onclick="openLightbox('images/yuzu.jpg', 'Юдзу')"><img src="images/yuzu.jpg" alt="Юдзу"></div>
-                <div class="info"><h3>Юдзу</h3><span class="origin">Япония, Корея</span><p>Гибрид мандарина и лимона. В Японии его добавляют в чай и соусы.</p></div>
+                <div class="info"><h3>Юдзу</h3><span class="origin">Япония, Корея</span><p>Гибрид мандарина и лимона.</p></div>
             </div>
             <div class="gallery-card">
                 <div class="photo" onclick="openLightbox('images/sweetie.jpg', 'Свити')"><img src="images/sweetie.jpg" alt="Свити"></div>
-                <div class="info"><h3>Свити</h3><span class="origin">Израиль</span><p>Гибрид помело и грейпфрута. Очень сладкий, совсем не горчит.</p></div>
+                <div class="info"><h3>Свити</h3><span class="origin">Израиль</span><p>Очень сладкий, не горчит.</p></div>
             </div>
             <div class="gallery-card">
                 <div class="photo" onclick="openLightbox('images/fingerlime.jpg', 'Пальчиковый лайм')"><img src="images/fingerlime.jpg" alt="Пальчиковый лайм"></div>
-                <div class="info"><h3>Пальчиковый лайм</h3><span class="origin">Австралия</span><p>Мякоть в виде шариков, как икра. Взрывается во рту!</p></div>
+                <div class="info"><h3>Пальчиковый лайм</h3><span class="origin">Австралия</span><p>Мякоть-икринки, взрывается во рту!</p></div>
             </div>
             <div class="gallery-card">
                 <div class="photo" onclick="openLightbox('images/bergamot.jpg', 'Бергамот')"><img src="images/bergamot.jpg" alt="Бергамот"></div>
-                <div class="info"><h3>Бергамот</h3><span class="origin">Италия</span><p>Его аромат знают все — это вкус чая «Эрл Грей».</p></div>
+                <div class="info"><h3>Бергамот</h3><span class="origin">Италия</span><p>Вкус чая «Эрл Грей».</p></div>
             </div>
         </div>
     </section>
 
-    <!-- ===== СЛАЙД 7: СЛОВАРИК ===== -->
+    <!-- ===== СЛАЙД 7 ===== -->
     <section class="slide">
         <h2>📖 Словарик</h2>
         <div class="glossary">
-            <div class="glossary-item"><span class="word">Гесперидии</span><span class="definition">Научное название плодов цитрусовых. Из греческого мифа о золотых яблоках в саду Гесперид.</span></div>
-            <div class="glossary-item"><span class="word">Гибрид</span><span class="definition">Растение, полученное путём скрещивания двух разных видов. Апельсин — гибрид помело и мандарина.</span></div>
-            <div class="glossary-item"><span class="word">Вечнозелёные</span><span class="definition">Растения, которые остаются зелёными круглый год и не сбрасывают листья на зиму.</span></div>
-            <div class="glossary-item"><span class="word">Цинга</span><span class="definition">Болезнь от нехватки витамина C: кровоточат дёсны, выпадают зубы, слабость. Лечится цитрусами.</span></div>
-            <div class="glossary-item"><span class="word">Помело</span><span class="definition">Самый крупный цитрус, до 10 кг. Прародитель апельсина и грейпфрута.</span></div>
-            <div class="glossary-item"><span class="word">Кумкват</span><span class="definition">Мини-цитрус размером с орех. Единственный, который едят вместе с кожурой.</span></div>
-            <div class="glossary-item"><span class="word">Цитрон</span><span class="definition">Древний цитрус с толстой ароматной кожурой. «Рука Будды» — его знаменитый сорт.</span></div>
-            <div class="glossary-item"><span class="word">Антиоксиданты</span><span class="definition">Вещества, которые защищают клетки организма от старения и болезней.</span></div>
-            <div class="glossary-item"><span class="word">Кладезь</span><span class="definition">Источник, хранилище чего-то ценного. «Кладезь витаминов» = источник множества витаминов.</span></div>
+            <div class="glossary-item"><span class="word">Гесперидии</span><span class="definition">Научное название плодов цитрусовых.</span></div>
+            <div class="glossary-item"><span class="word">Гибрид</span><span class="definition">Растение, полученное скрещиванием двух видов.</span></div>
+            <div class="glossary-item"><span class="word">Вечнозелёные</span><span class="definition">Растения, зелёные круглый год.</span></div>
+            <div class="glossary-item"><span class="word">Цинга</span><span class="definition">Болезнь от нехватки витамина C.</span></div>
+            <div class="glossary-item"><span class="word">Помело</span><span class="definition">Самый крупный цитрус, до 10 кг.</span></div>
+            <div class="glossary-item"><span class="word">Кумкват</span><span class="definition">Мини-цитрус, едят вместе с кожурой.</span></div>
+            <div class="glossary-item"><span class="word">Цитрон</span><span class="definition">Древний цитрус с толстой кожурой.</span></div>
+            <div class="glossary-item"><span class="word">Антиоксиданты</span><span class="definition">Вещества, защищающие клетки от старения.</span></div>
+            <div class="glossary-item"><span class="word">Кладезь</span><span class="definition">Источник, хранилище чего-то ценного.</span></div>
         </div>
     </section>
 
@@ -762,11 +583,10 @@
                 <div class="quiz-message" id="quizMessage"></div>
                 <button class="quiz-next" id="quizNext" onclick="nextQuestion()">Дальше →</button>
             </div>
-
             <div class="quiz-result" id="quizResult">
                 <div class="result-grade" id="resultGrade">5</div>
-                <div class="result-text" id="resultText">🏆 Отлично! Ты знаток цитрусов!</div>
-                <div class="result-stats" id="resultStats">Правильных ответов: 10 из 10</div>
+                <div class="result-text" id="resultText"></div>
+                <div class="result-stats" id="resultStats"></div>
                 <button class="quiz-restart" onclick="restartQuiz()">🔄 Пройти заново</button>
             </div>
         </div>
@@ -786,7 +606,7 @@
         <button id="next" title="Вперёд (→)">→</button>
     </div>
 
-    <span class="decor" style="top:5%; left:3%; animation-delay: 0s;">🍊</span>
+    <span class="decor" style="top:15%; left:3%;">🍊</span>
     <span class="decor" style="top:85%; left:92%; animation-delay: 1s;">🍋</span>
     <span class="decor" style="top:50%; left:95%; animation-delay: 2s;">🍈</span>
     <span class="decor" style="top:90%; left:5%; animation-delay: 3s;">🍊</span>
@@ -797,45 +617,50 @@
         const prevBtn = document.getElementById('prev');
         const nextBtn = document.getElementById('next');
         const progress = document.getElementById('progress');
+        const headerTitle = document.getElementById('headerTitle');
         let current = 0;
 
-        // ===== ЗВУК =====
+        // Названия разделов для шапки
+        const slideTitles = [
+            'Цитрусы',
+            '🌱 О цитрусах',
+            '🍋 Виды',
+            '💪 Польза',
+            '🤓 Факты',
+            '🌟 Необычные',
+            '📖 Словарик',
+            '🎯 Викторина',
+            '✨ Финал'
+        ];
+
+        // ЗВУК
         let soundOn = false;
         let audioCtx = null;
-
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-
+        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         function playTone(freq, dur, type = 'sine', vol = 0.08) {
             if (!soundOn) return;
             initAudio();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = type;
-            osc.frequency.value = freq;
+            osc.type = type; osc.frequency.value = freq;
             gain.gain.setValueAtTime(vol, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + dur);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + dur);
         }
-
         function playSlideSound() { playTone(660, 0.15, 'sine', 0.06); setTimeout(() => playTone(880, 0.2, 'sine', 0.05), 80); }
         function playClickSound() { playTone(1200, 0.1, 'triangle', 0.05); }
         function playCorrectSound() { [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => playTone(f, 0.25, 'sine', 0.07), i * 80)); }
         function playWrongSound() { playTone(220, 0.4, 'sawtooth', 0.07); playTone(180, 0.4, 'sawtooth', 0.06); }
         function playWowSound() { [523, 659, 784, 1047, 1319].forEach((f, i) => setTimeout(() => playTone(f, 0.3, 'sine', 0.07), i * 90)); }
         function playGradeSound() { [523, 659, 784, 1047, 1319, 1568, 2093].forEach((f, i) => setTimeout(() => playTone(f, 0.4, 'sine', 0.08), i * 100)); }
-
         function toggleSound() {
             soundOn = !soundOn;
             document.getElementById('soundToggle').textContent = soundOn ? '🔊' : '🔇';
             if (soundOn) playWowSound();
         }
 
-        // ===== ЧАСТИЦЫ =====
+        // ЧАСТИЦЫ
         const particlesContainer = document.getElementById('particles');
         const emojis = ['🍊', '🍋', '🍈', '🍊', '🍋', '✨', '🌟'];
         for (let i = 0; i < 20; i++) {
@@ -849,7 +674,7 @@
             particlesContainer.appendChild(p);
         }
 
-        // ===== ИСКРЫ =====
+        // ИСКРЫ
         const sparkleIcons = ['✨', '⭐', '💫', '🌟'];
         let lastSparkle = 0;
         document.addEventListener('mousemove', (e) => {
@@ -867,7 +692,7 @@
             setTimeout(() => s.remove(), 900);
         });
 
-        // ===== ВСПЫШКА (только зелёная, при правильном ответе) =====
+        // ВСПЫШКА
         function flashScreen(color) {
             if (color !== 'green') return;
             const flash = document.getElementById('screenFlash');
@@ -876,7 +701,7 @@
             flash.classList.add('flash-green');
         }
 
-        // ===== КОНФЕТТИ (по всему экрану) =====
+        // КОНФЕТТИ
         function createConfetti(count = 30) {
             const ce = ['🍊', '🍋', '🍈', '✨', '🎉', '⭐', '💫', '🌟'];
             for (let i = 0; i < count; i++) {
@@ -893,15 +718,14 @@
             }
         }
 
-        // ===== ВЗРЫВ ЧАСТИЦ (только для правильного ответа) =====
+        // ВЗРЫВ ЧАСТИЦ
         function burstParticles(x, y, count = 15) {
             const icons = ['✨', '⭐', '💫', '🌟', '🍊', '🍋'];
             for (let i = 0; i < count; i++) {
                 const p = document.createElement('span');
                 p.className = 'sparkle';
                 p.textContent = icons[Math.floor(Math.random() * icons.length)];
-                p.style.left = x + 'px';
-                p.style.top = y + 'px';
+                p.style.left = x + 'px'; p.style.top = y + 'px';
                 p.style.fontSize = (0.8 + Math.random() * 1.2) + 'em';
                 const angle = (Math.PI * 2 * i) / count;
                 const dist = 80 + Math.random() * 80;
@@ -912,7 +736,7 @@
             }
         }
 
-        // ===== СЛАЙДЫ =====
+        // СЛАЙДЫ
         function showSlide(index) {
             if (index < 0 || index >= slides.length) return;
             slides[current].classList.remove('active');
@@ -923,6 +747,14 @@
             prevBtn.disabled = current === 0;
             nextBtn.disabled = current === slides.length - 1;
             progress.style.width = ((current + 1) / slides.length) * 100 + '%';
+
+            // Обновляем название в шапке с анимацией
+            headerTitle.classList.add('changing');
+            setTimeout(() => {
+                headerTitle.textContent = slideTitles[current] || 'Цитрусы';
+                headerTitle.classList.remove('changing');
+            }, 200);
+
             playSlideSound();
             if (current === slides.length - 1) setTimeout(() => createConfetti(50), 300);
             if (current === 7) setTimeout(initQuizIfNeeded, 100);
@@ -955,7 +787,7 @@
             }
         });
 
-        // ===== ЛАЙТБОКС =====
+        // ЛАЙТБОКС
         function openLightbox(src, caption) {
             const lightbox = document.getElementById('lightbox');
             document.getElementById('lightboxImg').src = src;
@@ -964,35 +796,29 @@
             playWowSound();
             createConfetti(20);
         }
-
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
             playClickSound();
         }
-
         document.getElementById('lightbox').addEventListener('click', function(e) {
             if (e.target === this) closeLightbox();
         });
 
-        // ===== ВИКТОРИНА =====
+        // ВИКТОРИНА
         const quizData = [
             { question: 'Сколько «предков» у всех цитрусовых?', options: ['1', '2', '3', '5'], correct: 2 },
             { question: 'Какой цитрус едят вместе с кожурой?', options: ['Лимон', 'Кумкват', 'Помело', 'Грейпфрут'], correct: 1 },
             { question: 'От какой болезни спасали моряков лимоны?', options: ['Простуда', 'Цинга', 'Грипп', 'Аллергия'], correct: 1 },
             { question: 'Какой цитрус самый большой?', options: ['Апельсин', 'Грейпфрут', 'Помело', 'Лимон'], correct: 2 },
-            { question: 'Как переводится слово «апельсин» с голландского?', options: ['Солнечный плод', 'Китайское яблоко', 'Золотой шар', 'Сладкий фрукт'], correct: 1 },
+            { question: 'Как переводится «апельсин» с голландского?', options: ['Солнечный плод', 'Китайское яблоко', 'Золотой шар', 'Сладкий фрукт'], correct: 1 },
             { question: 'Как называется сорт цитрона с «пальцами»?', options: ['Рука Будды', 'Нога Цезаря', 'Пальцы Клеопатры', 'Ладонь Царя'], correct: 0 },
             { question: 'Где родина всех цитрусовых?', options: ['Африка', 'Южная Америка', 'Юго-Восточная Азия', 'Европа'], correct: 2 },
             { question: 'Сколько лет может жить цитрусовое дерево?', options: ['10 лет', '30 лет', '60 лет', '100+ лет'], correct: 3 },
             { question: 'Какой витамин в избытке содержится в цитрусах?', options: ['Витамин A', 'Витамин B', 'Витамин C', 'Витамин D'], correct: 2 },
-            { question: 'В какой стране мандарин — символ удачи и богатства?', options: ['Италия', 'Китай', 'Бразилия', 'Индия'], correct: 1 }
+            { question: 'В какой стране мандарин — символ удачи?', options: ['Италия', 'Китай', 'Бразилия', 'Индия'], correct: 1 }
         ];
 
-        let quizCurrent = 0;
-        let quizScore = 0;
-        let quizAnswered = false;
-        let quizInitialized = false;
-        let quizResults = [];
+        let quizCurrent = 0, quizScore = 0, quizAnswered = false, quizInitialized = false, quizResults = [];
 
         function renderDots() {
             const dots = document.getElementById('quizDots');
@@ -1000,11 +826,8 @@
             for (let i = 0; i < quizData.length; i++) {
                 const d = document.createElement('span');
                 d.className = 'quiz-dot';
-                if (i < quizCurrent) {
-                    d.classList.add(quizResults[i] ? 'correct' : 'wrong');
-                } else if (i === quizCurrent) {
-                    d.classList.add('current');
-                }
+                if (i < quizCurrent) d.classList.add(quizResults[i] ? 'correct' : 'wrong');
+                else if (i === quizCurrent) d.classList.add('current');
                 dots.appendChild(d);
             }
         }
@@ -1014,9 +837,7 @@
             document.getElementById('quizProgress').textContent = `Вопрос ${quizCurrent + 1} из ${quizData.length}`;
             document.getElementById('quizScore').textContent = `Счёт: ${quizScore}`;
             document.getElementById('quizQuestion').textContent = q.question;
-
             renderDots();
-
             const optsContainer = document.getElementById('quizOptions');
             optsContainer.innerHTML = '';
             q.options.forEach((opt, i) => {
@@ -1026,119 +847,74 @@
                 btn.onclick = (e) => checkAnswer(i, btn, e);
                 optsContainer.appendChild(btn);
             });
-
-            const msg = document.getElementById('quizMessage');
-            msg.textContent = '';
-            msg.className = 'quiz-message';
-
-            const nextBtn = document.getElementById('quizNext');
-            nextBtn.classList.remove('show');
-
+            document.getElementById('quizMessage').textContent = '';
+            document.getElementById('quizMessage').className = 'quiz-message';
+            document.getElementById('quizNext').classList.remove('show');
             quizAnswered = false;
         }
 
         function checkAnswer(index, btn, event) {
             if (quizAnswered) return;
             quizAnswered = true;
-
             const q = quizData[quizCurrent];
             const allOpts = document.querySelectorAll('.quiz-option');
             allOpts.forEach(b => b.disabled = true);
-
             const rect = btn.getBoundingClientRect();
             const cx = rect.left + rect.width / 2;
             const cy = rect.top + rect.height / 2;
 
             if (index === q.correct) {
-                // Правильно
                 btn.classList.add('correct');
                 quizScore++;
                 quizResults.push(true);
                 document.getElementById('quizScore').textContent = `Счёт: ${quizScore}`;
                 renderDots();
-
                 const msg = document.getElementById('quizMessage');
                 msg.textContent = '🎉 Правильно!';
                 msg.className = 'quiz-message success';
-
                 playCorrectSound();
                 flashScreen('green');
-                // Конфетти по ВСЕМУ экрану
                 createConfetti(25);
-                // Искры от кнопки (красиво!)
                 burstParticles(cx, cy, 20);
             } else {
-                // Неправильно — просто подсвечиваем правильный ответ, БЕЗ вспышек
                 btn.classList.add('wrong');
                 quizResults.push(false);
                 renderDots();
-
                 allOpts.forEach(b => {
                     if (b === btn) return;
-                    if (b.textContent === q.options[q.correct]) {
-                        b.classList.add('reveal-correct');
-                    } else {
-                        b.classList.add('faded');
-                    }
+                    if (b.textContent === q.options[q.correct]) b.classList.add('reveal-correct');
+                    else b.classList.add('faded');
                 });
-
                 const msg = document.getElementById('quizMessage');
-                msg.textContent = 'Неверный ответ!';
+                msg.textContent = '😅 Неверно! Правильный ответ подсвечен зелёным.';
                 msg.className = 'quiz-message error';
-
                 playWrongSound();
-                // Никаких вспышек и взрывов
             }
-
             setTimeout(() => {
                 const nextBtn = document.getElementById('quizNext');
-                if (quizCurrent < quizData.length - 1) {
-                    nextBtn.textContent = 'Дальше →';
-                } else {
-                    nextBtn.textContent = '🏆 Узнать результат';
-                }
+                nextBtn.textContent = quizCurrent < quizData.length - 1 ? 'Дальше →' : '🏆 Узнать результат';
                 nextBtn.classList.add('show');
             }, 900);
         }
 
         function nextQuestion() {
-            if (quizCurrent < quizData.length - 1) {
-                quizCurrent++;
-                renderQuiz();
-            } else {
-                showResult();
-            }
+            if (quizCurrent < quizData.length - 1) { quizCurrent++; renderQuiz(); }
+            else showResult();
         }
 
         function showResult() {
             document.getElementById('quizBody').style.display = 'none';
-            const resultEl = document.getElementById('quizResult');
-            resultEl.classList.add('show');
-
+            document.getElementById('quizResult').classList.add('show');
             let grade, text;
-            const correct = quizScore;
-            const total = quizData.length;
-
-            if (correct >= 7) {
-                grade = '5';
-                text = '🏆 Отлично! Ты настоящий знаток цитрусов!';
-            } else if (correct >= 4) {
-                grade = '4';
-                text = '👏 Хорошо! Ты много знаешь о цитрусах!';
-            } else if (correct >= 3) {
-                grade = '3';
-                text = '🙂 Неплохо, но можно лучше! Перечитай доклад.';
-            } else {
-                grade = '2';
-                text = '😅 Стоит перечитать доклад и попробовать снова!';
-            }
-
+            const correct = quizScore, total = quizData.length;
+            if (correct >= 7) { grade = '5'; text = '🏆 Отлично! Ты настоящий знаток цитрусов!'; }
+            else if (correct >= 4) { grade = '4'; text = '👏 Хорошо! Ты много знаешь о цитрусах!'; }
+            else if (correct >= 3) { grade = '3'; text = '🙂 Неплохо, но можно лучше!'; }
+            else { grade = '2'; text = '😅 Стоит перечитать доклад!'; }
             document.getElementById('resultGrade').textContent = grade;
             document.getElementById('resultText').textContent = text;
             document.getElementById('resultStats').textContent = `Правильных ответов: ${correct} из ${total}`;
-
             playGradeSound();
-            // Много конфетти по всему экрану!
             setTimeout(() => createConfetti(60), 200);
             setTimeout(() => createConfetti(40), 700);
             setTimeout(() => createConfetti(40), 1200);
@@ -1146,10 +922,7 @@
         }
 
         function restartQuiz() {
-            quizCurrent = 0;
-            quizScore = 0;
-            quizResults = [];
-            quizAnswered = false;
+            quizCurrent = 0; quizScore = 0; quizResults = []; quizAnswered = false;
             document.getElementById('quizBody').style.display = 'block';
             document.getElementById('quizResult').classList.remove('show');
             renderQuiz();
@@ -1157,10 +930,7 @@
         }
 
         function initQuizIfNeeded() {
-            if (!quizInitialized) {
-                renderQuiz();
-                quizInitialized = true;
-            }
+            if (!quizInitialized) { renderQuiz(); quizInitialized = true; }
         }
     </script>
 
